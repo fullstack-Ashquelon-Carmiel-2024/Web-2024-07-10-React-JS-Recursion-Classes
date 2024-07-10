@@ -1,3 +1,4 @@
+const btnRecursion = document.querySelector('#recursion');
 const towerList = Array.from(document.querySelectorAll('.tower'));
 
 const main = document.querySelector('main');
@@ -52,6 +53,18 @@ class Tower {
         return this.disks.length > 0;
     }
 
+    clickedMark() {
+        this.elTower.classList.add('clicked');
+    }
+
+    clickedUnMark() {
+        this.elTower.classList.remove('clicked');
+    }
+
+    getTopDiskSize() {
+        return this.disks[this.disks.length-1].width;
+    }
+
 }
 
 class Disk {
@@ -64,14 +77,12 @@ class Disk {
     }
 
     setX(towerMiddle) {
-        console.log(`towerMiddle=${towerMiddle}`)
-        console.log(`this.width=${this.width}`)
         this.x = towerMiddle - this.width / 2; 
         this.elDisk.style.left = this.x + 'px';
     }
     
     setY(currentHeight) {
-        // tbd
+        // tbd - when 'clicked' , there is a border
         this.y = currentHeight;
         this.elDisk.style.bottom = this.y + 'px';
     }
@@ -127,16 +138,77 @@ main.addEventListener('click',(e) => {
 
     if (clickedObject) {
        
-        if (twoClicks[0] === undefined) {
-            
-            let id = towerList.indexOf(clickedObject);
+        let id = towerList.indexOf(clickedObject);
 
+        if (twoClicks[0] === undefined) { // this is the first click
+            
             if (towers[id].hasDisks()) {
                 twoClicks[0] = id;
-                clickedObject.classList.add('clicked');
+                towers[id].clickedMark();
             }
             
+        } else { // this is the second click
+            
+            if (twoClicks[0] === id) {
+                twoClicks[0] = undefined;
+                towers[id].clickedUnMark();
+                return;
+            }
+            twoClicks[1] = id;
+            towers[id].clickedMark();
+            moveDisk();
         }
     }
 
 })
+
+function moveDisk() {
+    // twoClicks, for example: [0,2]
+    if (!towers[twoClicks[1]].hasDisks() || 
+       towers[twoClicks[0]].getTopDiskSize() < towers[twoClicks[1]].getTopDiskSize() ) {
+
+        console.log(`Moving disk from ${twoClicks[0]} to ${twoClicks[1]} ...`)
+
+        setTimeout(() => {
+            
+            towers[twoClicks[1]].addDisk(towers[twoClicks[0]].removeDisk());
+            cleanClicks();
+
+        }, 100);
+
+        // tbd - check if the user has solved the riddle and congratulate him
+
+    } else {
+        // tbd - add some red blinking in the case that the movement is not valid
+        cleanClicks();
+    }
+
+}
+
+function cleanClicks() {
+    towers[twoClicks[0]].clickedUnMark();
+    towers[twoClicks[1]].clickedUnMark();
+    twoClicks[0] = undefined;
+    twoClicks[1] = undefined;
+}
+
+function recursion(n,from,help,to) {
+    console.log(`*** ${n} disks from ${from} to ${to}`)
+
+    if (n === 1) {
+
+        console.log(`Moving disk from ${from} to ${to} ...`)
+        towers[to].addDisk(towers[from].removeDisk());
+        return;
+
+    }
+
+    
+    recursion(n-1,from,to,help);
+    recursion(1,from,help,to);
+    //towers[to].addDisk(towers[from].removeDisk());
+    recursion(n-1,help,from,to);
+
+}
+
+btnRecursion.addEventListener('click',()=>recursion(numOfDisks,0,1,2));

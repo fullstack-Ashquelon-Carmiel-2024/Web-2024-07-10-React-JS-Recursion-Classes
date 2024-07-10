@@ -18,9 +18,11 @@ class Animal {
 
 }
 
+const Rex = new Animal('Rex',30);
+
 class Gorilla extends Animal {
     constructor(name, weight) {
-        super(name, weight);
+        super(name, weight);  // Run the constructor of the parent class
     }
 
     climbTrees() {
@@ -32,7 +34,7 @@ class Gorilla extends Animal {
     }
 
     showVigour() {
-        return `${super.eat()} ${this.poundChest()}`;
+        return `${this.eat()} ${this.poundChest()}`;
     }
 
     dailyRoutine() {
