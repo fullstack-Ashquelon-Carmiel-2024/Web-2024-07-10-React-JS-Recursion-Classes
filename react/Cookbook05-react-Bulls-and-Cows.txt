@@ -1,0 +1,617 @@
+1. copy some basic react app to "bulls-and-cows"
+   or
+   $ npx create-react-app bulls-and-cows
+
+2. 
+$ npm i bootstrap sass
+
+3. index.css:
+
+body {
+  background: rgb(118, 143, 189);
+}
+
+4. src/components/header/Header.scss
+   src/components/header/Header.jsx:
+
+   Use snippet 'rfce' and after that change to
+
+   import './Header.scss';
+
+function Header({title}) {
+  return (
+    <h1 className="display-1 text-primary text-center">
+        {title}
+    </h1>
+  )
+}
+
+export default Header
+
+5. Import it into App and see that the classes 
+of Bootstrap work:
+
+import Header from './components/header/Header';
+
+function App() {
+  // MISSION: convert "users" into "state" and make
+  // this array to be their initial value
+
+  const users = [
+    { id: 77, fullName: 'Harleen Frances Quinzel', nick: 'Harley Quinn',
+      email:'harley@gmail.com', phone: '555-5555', gender: 'f',role:'player'},
+    { id: 121, fullName: 'Joakin Phoenix', nick: 'Joker',
+      email:'joker@gmail.com',  gender: 'm',role:'player'},
+    { id: 123, fullName: 'Bruce Wayne', nick: 'Batman',
+      email:'bat@gmail.com', phone: '555-5557',role:'player'},
+    { id: 111, fullName: 'Princess Diana of Thymiscira', nick: 'Wonder Woman',
+        email:'gal.gadot@gmail.com', phone: '555-5558', role:'admin'}
+  ];
+
+  return (
+    <div className="App">
+      <Header title='User List' /> 
+    </div>
+  );
+}
+
+export default App;
+
+6. import { useState } from 'react';
+
+import Header from './components/header/Header';
+
+
+function App() {
+  // MISSION: convert "users" into "state" and make
+  // this array to be their initial value
+  const [users,setUsers] = useState(
+      [
+        { id: 77, fullName: 'Harleen Frances Quinzel', nick: 'Harley Quinn',
+          email:'harley@gmail.com', phone: '555-5555', gender: 'f',role:'player'},
+        { id: 121, fullName: 'Joakin Phoenix', nick: 'Joker',
+          email:'joker@gmail.com',  gender: 'm',role:'player'},
+        { id: 123, fullName: 'Bruce Wayne', nick: 'Batman',
+          email:'bat@gmail.com', phone: '555-5557',role:'player'},
+        { id: 111, fullName: 'Princess Diana of Thymiscira', nick: 'Wonder Woman',
+            email:'gal.gadot@gmail.com', phone: '555-5558', role:'admin'}
+      ]);
+
+  return (
+    <div className="App">
+      <Header title='User List' /> 
+    </div>
+  );
+}
+
+export default App;
+
+7. Create src/components/userList/UserList.scss
+7. Create src/components/userList/UserList.jsx:
+
+   (use snippet 'rfc')
+
+   import './UserList.scss';
+import UserCard from '../userCard/UserCard';
+
+export default function UserList({users}) {
+  return (
+    // col-12 - 12 columns for the narowest screen (xs - extra small)
+    // col-sm-6 - starting from the small screen - take the half of bootstrap
+    <div className="col-12 col-sm-6 col-md-7">
+        <ul>
+{/* MISSION: create expression that if there are some users,
+creates "map" of <UserCard user={user} /> for each user,
+and if not, shows 
+<p className="display-5">This is a sociopatic game: no users</p>
+*/}
+        </ul>
+    </div>
+  )
+}
+
+8. MISSION ACCOMPLISHED in UserList.jsx:
+
+import './UserList.scss';
+import UserCard from '../userCard/UserCard';
+
+export default function UserList({users}) {
+  return (
+    // col-12 - 12 columns for the narowest screen (xs - extra small)
+    // col-sm-6 - starting from the small screen - take the half of bootstrap
+    <div className="col-12 col-sm-6 col-md-7">
+        <ul>
+{/* MISSION: create expression that if there are some users,
+creates "map" of <UserCard user={user} /> for each user,
+and if not, shows 
+<p className="display-5">This is a sociopatic game: no users</p>
+*/}
+            {users.length > 0 ?
+                users.map(user => 
+                    <UserCard key={user.id} user={user} />):
+                    <p className="display-5">
+                        This is a sociopatic game: no users</p>
+            }
+
+        </ul>
+    </div>
+  )
+}
+
+
+9. src/components/userCard/UserCard.scss
+9. src/components/userCard/UserCard.jsx
+
+import './UserCard.scss';
+import femaleImg from '../../images/woman-with-laptop-thinking.png';
+import maleImg from '../../images/guy-orange.PNG';
+import justUserImg from '../../images/user02.png';
+
+export default function UserCard({user}) {
+
+  const { fullName, email, role } = user;
+
+  let imgSrc = !user.gender ? justUserImg : user.gender === 'f' 
+                            ? femaleImg : maleImg;
+
+  return (
+    <li className="card mb-2">
+
+        <div className="row">
+
+            <div className="col-4">
+                <img src={imgSrc} className="img-fluid rounded-start" alt="" />
+            </div>
+            <div className="col-7 card-body">
+                <h5 className="card-title">{fullName}</h5>
+                <p className="card-text">Email: {email}</p>
+                <p className="card-text"><small className="text-muted">
+                    Role: {role}
+                </small></p>
+            </div>
+            <div className="col-1">
+
+            </div>
+
+        </div>
+
+    </li>
+  )
+}
+
+
+10. Add UserList to App:
+
+import { useState } from 'react';
+
+import Header from './components/header/Header';
+import UserList from './components/userList/UserList';
+
+
+function App() {
+  // MISSION: convert "users" into "state" and make
+  // this array to be their initial value
+  const [users,setUsers] = useState(
+      [
+        { id: 77, fullName: 'Harleen Frances Quinzel', nick: 'Harley Quinn',
+          email:'harley@gmail.com', phone: '555-5555', gender: 'f',role:'player'},
+        { id: 121, fullName: 'Joakin Phoenix', nick: 'Joker',
+          email:'joker@gmail.com',  gender: 'm',role:'player'},
+        { id: 123, fullName: 'Bruce Wayne', nick: 'Batman',
+          email:'bat@gmail.com', phone: '555-5557',role:'player'},
+        { id: 111, fullName: 'Princess Diana of Thymiscira', nick: 'Wonder Woman',
+            email:'gal.gadot@gmail.com', phone: '555-5558', role:'admin'}
+      ]);
+
+  return (
+    <div className="App">
+      <Header title='User List' /> 
+      <UserList users={users} />
+    </div>
+  );
+}
+
+export default App;
+
+
+11. Create AddUser form:
+
+src/components/addUser/AddUser.scss
+src/components/addUser/AddUser.jsx:
+
+import './AddUser.scss';
+
+export default function AddUser() {
+
+    return (
+      <div className="col-12 col-sm-6 col-md-5 border-start border-start-1 border-primary px-5 addUser order-0 order-sm-1">
+          
+          {/* noValidate - removes original HTML validation, 
+              pay attention that here in React it is written noValidate
+              and not novalidate as in plain HTML */}
+          <form className="fs-3"  noValidate >
+          
+            <div className="form-group row">
+                <div className="opacity-0 text-danger" >
+                    The Name or the Nick already exists!
+                </div>
+            </div>
+            <div className="form-group row mb-2">
+              <label className="col-form-label col-12 col-lg-3" htmlFor="fullName">Name:</label>
+              <div className="col-12 offset-0 col-lg-8 offset-lg-1">
+
+                  <input className="form-control fs-3" type="text" name="fullName" id="fullName" 
+                        required />
+
+
+                  <div className="invalid-feedback">You should enter a full name!</div>
+              </div>
+            
+            </div>
+            <div className="form-group row mb-2">
+              <label className="col-form-label col-12 col-lg-3" htmlFor="email">Email:</label>
+              <div className="col-12 col-lg-8 offset-lg-1">
+
+                  <input className="form-control fs-3" type="email" name="email" id="email" 
+                           required                    />
+
+                  <div className="invalid-feedback">You should enter a valid email!</div>
+              </div>
+            </div>
+            
+            <div className="form-group row mb-2">
+              <label className="col-form-label col-12 col-lg-3" htmlFor="nick">Nick:</label>
+              <div className="col-12 col-lg-8 offset-lg-1" >
+
+                  <input className="form-control fs-3" type="text" name="nick" id="nick"
+                           required />
+                  <div className="invalid-feedback">You should supply a nickname!</div>
+
+              </div>
+            </div>
+            <div className="form-group row mb-2">
+              <label className="col-form-label col-12 col-lg-3" htmlFor="phone">Phone:</label>
+              <div className="col-12 col-lg-8 offset-lg-1">
+
+                  <input className="form-control fs-2" type="tel" name="phone" id="phone"
+                          />
+
+              </div>
+            </div>
+            <div className="form-group row">
+              <label className="col-form-label col-12 col-lg-3" htmlFor="gender">Gender:</label>
+              <div className="col-12 col-lg-8 offset-lg-1">
+
+                  <select className="form-control fs-4" name="gender" id="gender"
+                            >
+                    <option value="">-- Choose gender --</option>
+                    <option value="f">Female</option>
+                    <option value="m">Male</option>
+                    <option value="">Not telling ya</option>
+                  </select>
+              </div>
+            </div>
+            <div className="form-group row">
+              <label className="col-form-label col-12 col-lg-3" htmlFor="role">Role:</label>
+              <div className="col-12 col-lg-8 offset-lg-1">
+
+                  <select className="form-control fs-4" name="role" id="role" required
+                            >
+                    <option value="">-- Choose role --</option>
+                    <option value="admin">Admin</option>
+                    <option value="player">Player</option>
+
+                  </select>
+              </div>
+            </div>
+            <div className="d-grid">
+
+                <button 
+                    className="btn btn-outline-info btn-lg fs-1 px-5 mt-4 shadow">
+                            Add</button>
+            </div>
+          </form>
+      </div>
+    )
+  }
+
+  12. Use React "composition" inside App.jsx:
+
+  import { useState } from 'react';
+
+import AddUser from './components/addUser/AddUser';
+import Header from './components/header/Header';
+import UserList from './components/userList/UserList';
+
+
+function App() {
+  // MISSION: convert "users" into "state" and make
+  // this array to be their initial value
+  const [users,setUsers] = useState(
+      [
+        { id: 77, fullName: 'Harleen Frances Quinzel', nick: 'Harley Quinn',
+          email:'harley@gmail.com', phone: '555-5555', gender: 'f',role:'player'},
+        { id: 121, fullName: 'Joakin Phoenix', nick: 'Joker',
+          email:'joker@gmail.com',  gender: 'm',role:'player'},
+        { id: 123, fullName: 'Bruce Wayne', nick: 'Batman',
+          email:'bat@gmail.com', phone: '555-5557',role:'player'},
+        { id: 111, fullName: 'Princess Diana of Thymiscira', nick: 'Wonder Woman',
+            email:'gal.gadot@gmail.com', phone: '555-5558', role:'admin'}
+      ]);
+
+  return (
+    <div className="App">
+      <UserList users={users}>
+        <Header title='User List' /> 
+      </UserList>
+      
+      <AddUser>
+        <Header title='Add User' /> 
+      </AddUser>
+    </div>
+  );
+}
+
+export default App;
+
+13. Make UserList to use children:
+
+import './UserList.scss';
+import UserCard from '../userCard/UserCard';
+
+export default function UserList({users, children}) {
+  return (
+    // col-12 - 12 columns for the narowest screen (xs - extra small)
+    // col-sm-6 - starting from the small screen - take the half of bootstrap
+    <div className="col-12 col-sm-6 col-md-7">
+        {children}
+        <ul>
+
+14. Make AddUser to use children:
+
+import './AddUser.scss';
+
+export default function AddUser({children}) {
+
+    return (
+      <div className="col-12 col-sm-6 col-md-5 border-start border-start-1 border-primary px-5 addUser order-0 order-sm-1">
+          
+        {children}
+
+          {/* noValidate - removes original HTML validation, 
+              pay attention that here in React it is written noValidate
+              and not novalidate as in plain HTML */}
+          <form className="fs-3"  noValidate >
+
+15. Use composition with the children in App.jsx,
+and add "container" and "row" to make Bootstrap work:
+
+import { useState } from 'react';
+
+import AddUser from './components/addUser/AddUser';
+import Header from './components/header/Header';
+import UserList from './components/userList/UserList';
+
+
+function App() {
+  // MISSION: convert "users" into "state" and make
+  // this array to be their initial value
+  const [users,setUsers] = useState(
+      [
+        { id: 77, fullName: 'Harleen Frances Quinzel', nick: 'Harley Quinn',
+          email:'harley@gmail.com', phone: '555-5555', gender: 'f',role:'player'},
+        { id: 121, fullName: 'Joakin Phoenix', nick: 'Joker',
+          email:'joker@gmail.com',  gender: 'm',role:'player'},
+        { id: 123, fullName: 'Bruce Wayne', nick: 'Batman',
+          email:'bat@gmail.com', phone: '555-5557',role:'player'},
+        { id: 111, fullName: 'Princess Diana of Thymiscira', nick: 'Wonder Woman',
+            email:'gal.gadot@gmail.com', phone: '555-5558', role:'admin'}
+      ]);
+
+  return (
+    <div className="App container">
+      <div className="appTitle">Bulls and Cows</div>
+      <div className="row">
+
+        <UserList users={users}>
+          <Header title='User List' /> 
+        </UserList>
+
+        <AddUser>
+          <Header title='Add User' /> 
+        </AddUser>
+        
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+16. Change margin in the container and the gaps in the row in App:
+
+import { useState } from 'react';
+
+import AddUser from './components/addUser/AddUser';
+import Header from './components/header/Header';
+import UserList from './components/userList/UserList';
+
+
+function App() {
+  // MISSION: convert "users" into "state" and make
+  // this array to be their initial value
+  const [users,setUsers] = useState(
+      [
+        { id: 77, fullName: 'Harleen Frances Quinzel', nick: 'Harley Quinn',
+          email:'harley@gmail.com', phone: '555-5555', gender: 'f',role:'player'},
+        { id: 121, fullName: 'Joakin Phoenix', nick: 'Joker',
+          email:'joker@gmail.com',  gender: 'm',role:'player'},
+        { id: 123, fullName: 'Bruce Wayne', nick: 'Batman',
+          email:'bat@gmail.com', phone: '555-5557',role:'player'},
+        { id: 111, fullName: 'Princess Diana of Thymiscira', nick: 'Wonder Woman',
+            email:'gal.gadot@gmail.com', phone: '555-5558', role:'admin'}
+      ]);
+
+  return (
+    <div className="App container pb-5">
+      <div className="appTitle">Bulls and Cows</div>
+      <div className="row gx-0 gy-3">
+
+        <UserList users={users}>
+          <Header title='User List' /> 
+        </UserList>
+
+        <AddUser>
+          <Header title='Add User' /> 
+        </AddUser>
+
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+17. In AddUser, make it first (above)
+    in the narrowest screen, and the second (on the right)
+    in the other screens: 
+
+    import './AddUser.scss';
+
+export default function AddUser({children}) {
+
+    return (
+      <div className="col-12 col-sm-6 col-md-5 col-lg-5 offset-lg-1 border-start border-start-1 border-primary px-5 addUser order-0 order-sm-1">
+          
+        {children}
+
+
+18. In UserList, make it second (below)
+    in the narrowest screen, and the first (on the left)
+    in the other screens,
+    also removed the padding of <ul>:
+
+      return (
+    // col-12 - 12 columns for the narowest screen (xs - extra small)
+    // col-sm-6 - starting from the small screen - take the half of bootstrap
+    <div className="col-12 col-sm-6 col-md-7 col-lg-6 order-1 order-sm-0">
+        {children}
+        <ul className="p-0">
+
+19. Install packages for the Font Awesome icons :
+
+npm i 
+
+@fortawesome/fontawesome-svg-core
+
+@fortawesome/free-brands-svg-icons
+@fortawesome/free-regular-svg-icons
+@fortawesome/free-solid-svg-icons
+
+@fortawesome/react-fontawesome@latest
+
+@fortawesome/fontawesome-free
+
+20. Sο, the best 3 methods of using Font Awesome now:
+
+    a) If we need just a few icons here and there once in a progam
+       
+       Import into the specific component the object of FontAwesomeIcon:
+       import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+
+       In the same component import the specific icon objects, like:
+
+       import { faCoffee, faTrashCan as faSolidTrashCan } 
+                 from '@fortawesome/free-solid-svg-icons';
+      import { faReact } from '@fortawesome/free-brands-svg-icons';
+
+     And now we use it:
+
+        <FontAwesomeIcon icon={faTrashCan} 
+                  className="text-danger" role='button' />
+                <FontAwesomeIcon icon={faCoffee} 
+                  className="text-warning" role='button' />
+                <FontAwesomeIcon icon={faSolidTrashCan} 
+                  className="text-info" role='button' />
+
+      b) If we need some icons for the use through the several components
+         in the program. We can create one common file like:
+
+         assets/icons/projectIcons.js:
+
+        import {faTrashCan} from '@fortawesome/free-regular-svg-icons';
+        import {faCow} from '@fortawesome/free-solid-svg-icons';
+
+         import { library} from '@fortawesome/fontawesome-svg-core';
+
+         library.add(faCow,faTrashCan);
+
+         Import the file into index.js:
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './assets/icons/projectIcons';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
+import App from './App';
+
+         Import into the specific component the object of FontAwesomeIcon:
+       import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+
+          And use it with the class names:
+          <FontAwesomeIcon icon="fa-regular fa-trash-can" 
+                  className="text-danger" role='button' />
+
+c) When we need a lot of icons
+
+We can create one common file like:
+
+         assets/icons/projectIcons.js:
+
+          Import one or more icon sets:
+
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import { library} from '@fortawesome/fontawesome-svg-core';
+library.add(far,fas,fab)
+
+Import the file into index.js:
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './assets/icons/projectIcons';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
+import App from './App';
+
+Import into the specific component the object of FontAwesomeIcon:
+       import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+
+
+
+And use it with the class names:
+
+<FontAwesomeIcon icon="fa-regular fa-trash-can" 
+                  className="text-danger" role='button' />
+
+21. Move images dir into the "assets" dir and
+perform the change in UserCard:
+
+import './UserCard.scss';
+import femaleImg from '../../assets/images/woman-with-laptop-thinking.png';
+import maleImg from '../../assets/images/guy-orange.PNG';
+import justUserImg from '../../assets/images/user02.png';
+
+
+22. Styling Icons:
+
+https://docs.fontawesome.com/web/style/rotate
+
+
+
+
+
+
+
+
