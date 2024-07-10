@@ -1,0 +1,39 @@
+Requirements:
+
+- Class of Stock
+- Class of Avatar
+- Object of Stock of Client Avatars
+- Object of Stock of Shopping Cart Avatars
+
+- Class of Stock of Products extends class of Stock
+יורש קלאס של המחסן
+
+- Class of Poducts (may be extends class of Avatars)
+
+- Class of Client (may be also class of Shopping Cart)
+
+Functionality:
+- Show Stock of Client Avatars (should shuffle them before showing)
+- Show Stock of Shopping Cart Avatars (should shuffle them before showing)
+- Show Product Stock. Product that is "on sale" should show "sale",
+  and product that has 4-5 stars should show stars.
+- Enable the User to choose Client Avatar and Shopping Cart Avatar
+  and create Client Object
+- Enable the User to fill the Cart with Products
+
+Optional Recursive part:
+
+- Open all the levels of the bought sets and put them on the "shelves"
+at home like: 5 bottles of red wine, 10 green apples, 3 martini glasses
+(with the pictures)
+
+function orderPurchasedItems(ar) {
+    // if ar - is one layer array of the item objects - just put these objects
+                                                        // on the shelves
+
+    // if ar contains array inside, we will use orderPurchasedItems again
+}
+
+
+- If not doing recursion, just put the "set"s on the "shelves",
+like 2 small red sets, 3 medium green combination
